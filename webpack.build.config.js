@@ -56,7 +56,7 @@ module.exports = [
 		entry: "./src/index.js",
 		output: {
 			path: path.resolve(__dirname, './dist'),
-			filename: "vue-tag-picker.js",
+			filename: "vuetagpicker.js",
 			library: "VueTagPicker",
 			libraryTarget: "umd"
 		},
@@ -75,7 +75,7 @@ module.exports = [
 		/*	new webpack.BannerPlugin(banner, {
 				raw: true
 			}),*/
-			new ExtractTextPlugin({filename:"vue-tag-picker.min.css",  allChunks: true, fallback:"style-loader" }),
+			new ExtractTextPlugin({filename:"vuetagpicker.min.css",  allChunks: true, fallback:"style-loader" }),
 			new StatsPlugin( {filename:"./stats.json",
 				chunkModules: true
 				//exclude: [/node_modules[\\\/]react/]
