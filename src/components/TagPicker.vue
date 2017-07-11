@@ -1,12 +1,11 @@
 <template>
   <div class="tagpicker">
     <ul class="tagger-main" @click="setFocus">
-      <pre data-bind="text: ko.toJSON($data, null, 2)"></pre>
-  
+      
       <li v-for="(tag, index) in tags" class="tagger-tag" v-bind:key="tag">
         <span>{{tag}}</span>
         <span class="tagger-remove clickable" @click="removeTag(tag, index)">
-          X
+          &#10006;
         </span>
       </li>
       <!-- /ko -->
@@ -92,6 +91,9 @@ export default {
 }
 
 .tagger-main {
+  font-family: "sans-serif";
+  letter-spacing: 1px;
+  font-size: 0.9rem;
   overflow: auto;
   margin-left: inherit;
   /* usually we don't want the regular ul margins. */
@@ -101,7 +103,7 @@ export default {
   width: 100%;
   /* height: 34px; */
   padding: 6px 12px;
-  font-size: 14px;
+
   line-height: 1.42857143;
   color: #555;
   background-color: #fff;
