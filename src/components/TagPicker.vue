@@ -207,7 +207,7 @@ export default {
 }
 
 .tagger-tag.editing {
-  background-color: #555;
+  background-color: #555 !important;
 }
 
 .tagger-main .tagger-remove {
