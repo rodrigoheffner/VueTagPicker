@@ -1,17 +1,16 @@
 <template>
   <div class="tagpicker">
     <ul class="tagger-main" @click="setFocus">
-      
-      <li v-for="(tag, index) in tags" class="tagger-tag" v-bind:key="tag">
-        <span>{{tag}}</span>
+  
+      <li v-for="(tag, index) in tags" class="tagger-tag noselect" v-bind:key="tag" :style="{backgroundColor: tagColour, color: tagTextColour}">
+        <span v-on:dblclick="setEdit">{{tag}}</span>
         <span class="tagger-remove clickable" @click="removeTag(tag, index)">
           &#10006;
         </span>
       </li>
-      <!-- /ko -->
   
       <li class="tagger-new">
-        <input type="text" v-model="field" @keydown="fieldUpdate" @blur="lostFocus">
+        <input type="text" :id="fieldName" v-model="field" @keydown="fieldUpdate" @blur="lostFocus" :style="{borderColor: tagColour}">
       </li>
     </ul>
   </div>
@@ -24,25 +23,48 @@ import {
 export default {
   name: 'tag-picker',
   props: {
-    allowSpace: {
-      type: Boolean,
-      default: false
-    },
+    //Allow duplicate tags
     allowDuplicates: {
       type: Boolean,
       default: false
     },
+
     seperator: {
       type: String,
       default: "|"
+    },
+    addOnKeys: {
+      type: Array,
+      default: () => [TabKey, EnterKey, CommaKey]
+    },
+    removeOnKeys: {
+      type: Array,
+      default: () => [DeleteKey]
+    },
+    tagsList: {
+      default: () => []
+    },
+    tagColour: {
+      type: String,
+      default: "#3498db"
+    },
+    tagTextColour: {
+      type: String,
+      default: "white"
+    },
+    fieldName: {
+      type: String,
+      default: "vue-tag-picker"
     }
   },
   data() {
     return {
-      addOnKeys: [TabKey, EnterKey, CommaKey],
-      removeOnKeys: [DeleteKey],
-      tags: [],
-      field: ""
+      field: "",
+      editing: {
+        mode: false,
+        original: ""
+      },
+      tags: !Array.isArray(this.tagsList) ? this.tagsList.split(this.seperator) : this.tagsList
     }
   },
   methods: {
@@ -62,24 +84,73 @@ export default {
       }
     },
     addTag() {
-      if (!this.allowDuplicates && this.tags.includes(this.field)) {
+
+      //If we're editing we want to get the tag we're editing
+      if (this.editing.mode) {
+        let current = this.tags.indexOf(this.editing.original);
+        //Update the contents
+        this.tags[current] = this.field;
+        //Reset editing and field
+        this.editing.mode = false;
+        this.field = "";
+        this.removeAllEditingClasses();
+        //Don't continue adding the tag
         return;
       }
+      //If no duplicates are allowed and the user is trying to add a dupe. Return early and animate the existing tag
+      if (!this.allowDuplicates && this.tags.includes(this.field)) {
+        let current = this.tags.indexOf(this.field);
+        let currentEl = this.$el.getElementsByClassName("tagger-tag")[current];
+        currentEl.classList.add("shake");
+        setTimeout(() => currentEl.classList.remove("shake"), 1000);
+        return;
+      }
+      //If the field has a value, then add it to the tags
       if (!!this.field.trim()) {
         this.tags.push(this.field);
-        this.field = "";
-      }
-    },
-    fieldUpdate(e) {
-      if (this.addOnKeys.includes(e.keyCode)) {
-        this.addTag();
-      } else if (this.removeOnKeys.includes(e.keyCode)) {
-        this.tags.pop();
-      } else {
-        return true;
       }
 
+      //Reset field
+      this.field = "";
     },
+    fieldUpdate(e) {
+      //If the key is one of the keycodes we use to add a tag, then add
+      if (this.addOnKeys.includes(e.keyCode)) {
+        this.addTag();
+        //If it's a remove keycode and there is no text in the field, delete the last tag.
+      } else if (this.removeOnKeys.includes(e.keyCode) && this.field.length === 0) {
+        this.tags.pop();
+      } else {
+        //Return true to propogate
+        return true;
+      }
+    },
+    removeAllEditingClasses() {
+      let tags = this.$el.getElementsByClassName("tagger-tag");
+      for (var tag of tags) {
+        tag.classList.remove("editing")
+      }
+    },
+    setEdit(e) {
+      let current = e.target;
+
+      this.editing = {
+        mode: true,
+        original: current.textContent
+      }
+      //Reset editing
+      this.removeAllEditingClasses();
+      //get existing tag el
+      e.target.parentElement.classList.toggle("editing");
+      //e.target.classList.toggle("editing")
+      this.field = current.textContent;
+    }
+  },
+  watch: {
+    // whenever question changes, this function will run
+    tags: function (newTag) {
+      this.$emit('changed', this.tags);
+    }
   }
 }
 </script>
@@ -91,25 +162,21 @@ export default {
 }
 
 .tagger-main {
-  font-family: "sans-serif";
+  font-family: sans-serif;
   letter-spacing: 1px;
   font-size: 0.9rem;
   overflow: auto;
   margin-left: inherit;
-  /* usually we don't want the regular ul margins. */
   margin-right: inherit;
   list-style: none;
   display: block;
   width: 100%;
-  /* height: 34px; */
-  padding: 6px 12px;
-
+  padding: 6px;
   line-height: 1.42857143;
   color: #555;
   background-color: #fff;
   background-image: none;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid #FFF6E6;
 }
 
 .tagger-main li,
@@ -118,6 +185,7 @@ export default {
   height: 100%;
   border: none;
   float: left;
+  cursor: default;
   margin: 2px 10px 2px 0;
 }
 
@@ -127,16 +195,19 @@ export default {
 
 .tagger-main .tagger-new input:focus {
   outline: none;
-  border-bottom: #3498db 2px solid;
+  border-bottom: 2px solid;
 }
 
 .tagger-main .tagger-tag {
   display: inline-block;
-  background-color: #3498db;
   color: white;
   padding: 0.5em;
-  border-radius: 3px;
+
   margin-left: 5px;
+}
+
+.tagger-tag.editing {
+  background-color: #555;
 }
 
 .tagger-main .tagger-remove {
@@ -174,5 +245,21 @@ export default {
 .shake {
   animation-name: shake;
   animation-duration: 0.75s;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
 </style>
