@@ -1,6 +1,6 @@
 <template>
   <div class="tagpicker">
-    <ul class="tagger-main" @click="setFocus">
+    <ul class="tagger-main" @click="setFocus" :style="{borderColor: borderColor}">
   
       <li v-for="(tag, index) in tags" class="tagger-tag noselect" v-bind:key="tag" :style="{backgroundColor: tagColour, color: tagTextColour}">
         <span v-on:dblclick="setEdit">{{tag}}</span>
@@ -55,6 +55,10 @@ export default {
     fieldName: {
       type: String,
       default: "vue-tag-picker"
+    },
+    borderColor: {
+      type:String,
+      default: "#cecece"
     }
   },
   data() {
@@ -170,14 +174,14 @@ export default {
   margin-right: inherit;
   list-style: none;
   display: block;
-  width: 100%;
   padding: 6px;
   line-height: 1.42857143;
   color: #555;
   background-color: #fff;
   background-image: none;
-  border: 1px solid #FFF6E6;
+  border: 1px solid;
 }
+
 
 .tagger-main li,
 .tagger-main .tagger-new input {
