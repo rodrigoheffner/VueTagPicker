@@ -76,10 +76,6 @@ module.exports = [
 				raw: true
 			}),*/
 			new ExtractTextPlugin({filename:"vuetagpicker.min.css",  allChunks: true, fallback:"style-loader" }),
-			new StatsPlugin( {filename:"./stats.json",
-				chunkModules: true
-				//exclude: [/node_modules[\\\/]react/]
-			}),
 		],
 
 		module: {
