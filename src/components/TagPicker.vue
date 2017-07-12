@@ -57,7 +57,7 @@ export default {
       default: "vue-tag-picker"
     },
     borderColor: {
-      type:String,
+      type: String,
       default: "#cecece"
     }
   },
@@ -68,7 +68,7 @@ export default {
         mode: false,
         original: ""
       },
-      tags: !Array.isArray(this.tagsList) ? this.tagsList.split(this.seperator) : this.tagsList
+      tags: []
     }
   },
   methods: {
@@ -150,9 +150,12 @@ export default {
       this.field = current.textContent;
     }
   },
+  created() {
+    this.tags = !Array.isArray(this.tagsList) ? this.tagsList.split(this.seperator) : this.tagsList
+  },
   watch: {
     // whenever question changes, this function will run
-    tags: function (newTag) {
+    tags(newTag) {
       this.$emit('changed', this.tags);
     }
   }
