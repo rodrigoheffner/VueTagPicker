@@ -98,6 +98,7 @@ export default {
         this.editing.mode = false;
         this.field = "";
         this.removeAllEditingClasses();
+        this.$emit("updated", this.tags[current], this.editing.original);
         //Don't continue adding the tag
         return;
       }
@@ -112,6 +113,7 @@ export default {
       //If the field has a value, then add it to the tags
       if (!!this.field.trim()) {
         this.tags.push(this.field);
+        this.$emit("added", this.field);
       }
 
       //Reset field
@@ -150,8 +152,8 @@ export default {
       this.field = current.textContent;
     }
   },
-  created() {
-    this.tags = !Array.isArray(this.tagsList) ? this.tagsList.split(this.seperator) : this.tagsList
+  mounted() {
+    this.tags = Array.isArray(this.tagsList) ? this.tagsList : this.tagsList.split(this.seperator)
   },
   watch: {
     // whenever question changes, this function will run

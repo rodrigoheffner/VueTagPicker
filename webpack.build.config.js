@@ -69,12 +69,10 @@ module.exports = [
 			}),
 			new webpack.optimize.UglifyJsPlugin({
 				compress: {
-					warnings: false
-				}
+					warnings: false,
+				},
+				comments: false
 			}),
-		/*	new webpack.BannerPlugin(banner, {
-				raw: true
-			}),*/
 			new ExtractTextPlugin({filename:"vuetagpicker.min.css",  allChunks: true, fallback:"style-loader" }),
 		],
 
