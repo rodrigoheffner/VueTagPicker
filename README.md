@@ -23,4 +23,7 @@ This is a Vue.js component for accepting many dynamic input items from the user.
 | borderColor      | String | #cecece | Override the default border colour for the component. |
 
 
+## Demo
+[JSFiddle](https://jsfiddle.net/aidurber/1fzdq9dz/)
+
 ### Incomplete - This is a work in progress!
