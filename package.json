@@ -9,7 +9,8 @@
     "build": "cross-env FULL_BUNDLE=false webpack --progress --config webpack.build.config.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
-    "test": "npm run unit && npm run e2e"
+    "test": "npm run unit && npm run e2e",
+    "prepublish": "npm run build && npm run unit"
   },
   "bugs": {
     "url": "https://github.com/Aidurber/VueTagPicker",
