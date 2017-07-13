@@ -1,8 +1,6 @@
 import Vue from 'vue/dist/vue.js'
 import TagPicker from '@/components/TagPicker'
-import {
-  CommaKey, TabKey, DeleteKey, SpaceKey, EnterKey
-} from '@/utils/constants';
+import { CommaKey, TabKey, DeleteKey, SpaceKey, EnterKey } from '@/utils/constants';
 import { addClass, removeClass, toggleClass } from '@/utils/dom';
 describe('TagPicker.vue', () => {
   const basicStringArray = "foo|bar";
