@@ -3,7 +3,7 @@
     <ul class="tagger-main" @click="setFocus" :style="{borderColor: borderColor}">
   
       <li v-for="(tag, index) in tags" class="tagger-tag noselect" v-bind:key="tag" :style="{backgroundColor: tagColour, color: tagTextColour}">
-        <span v-on:dblclick="setEdit">{{tag}}</span>
+        <span v-on:dblclick="setEdit(index)">{{tag}}</span>
         <span class="tagger-remove clickable" @click="removeTag(tag, index)">
           &#10006;
         </span>
@@ -20,6 +20,15 @@
 import {
   CommaKey, TabKey, DeleteKey, SpaceKey, EnterKey
 } from '../utils/constants';
+
+import { addClass, removeClass, toggleClass } from '../utils/dom';
+
+function includes(arr, str) {
+  return arr.indexOf(str) > -1;
+}
+
+
+
 export default {
   name: 'tag-picker',
   props: {
@@ -91,23 +100,23 @@ export default {
 
       //If we're editing we want to get the tag we're editing
       if (this.editing.mode) {
-        let current = this.tags.indexOf(this.editing.original);
         //Update the contents
-        this.tags[current] = this.field;
+        this.tags[this.editing.original] = this.field;
         //Reset editing and field
         this.editing.mode = false;
         this.field = "";
         this.removeAllEditingClasses();
-        this.$emit("updated", this.tags[current], this.editing.original);
         //Don't continue adding the tag
         return;
       }
+      //console.log(!this.allowDuplicates && includes(this.tags, this.field))
       //If no duplicates are allowed and the user is trying to add a dupe. Return early and animate the existing tag
-      if (!this.allowDuplicates && this.tags.includes(this.field)) {
+      if (!this.allowDuplicates && includes(this.tags, this.field)) {
+
         let current = this.tags.indexOf(this.field);
         let currentEl = this.$el.getElementsByClassName("tagger-tag")[current];
-        currentEl.classList.add("shake");
-        setTimeout(() => currentEl.classList.remove("shake"), 1000);
+        addClass(this.$el.getElementsByClassName("tagger-tag"), "shake");
+        setTimeout(() => toggleClass(currentEl, "shake"), 1000);
         return;
       }
       //If the field has a value, then add it to the tags
@@ -121,10 +130,10 @@ export default {
     },
     fieldUpdate(e) {
       //If the key is one of the keycodes we use to add a tag, then add
-      if (this.addOnKeys.includes(e.keyCode)) {
+      if (includes(this.addOnKeys, e.keyCode)) {
         this.addTag();
         //If it's a remove keycode and there is no text in the field, delete the last tag.
-      } else if (this.removeOnKeys.includes(e.keyCode) && this.field.length === 0) {
+      } else if (includes(this.removeOnKeys, e.keyCode) && this.field.length === 0) {
         this.tags.pop();
       } else {
         //Return true to propogate
@@ -134,20 +143,20 @@ export default {
     removeAllEditingClasses() {
       let tags = this.$el.getElementsByClassName("tagger-tag");
       for (var tag of tags) {
-        tag.classList.remove("editing")
+        removeClass(tag, "editing");
       }
     },
-    setEdit(e) {
-      let current = e.target;
+    setEdit(i) {
+      let el = this.$el.getElementsByClassName("tagger-tag")[i];
 
       this.editing = {
         mode: true,
-        original: current.textContent
+        original: i
       }
       //Reset editing
       this.removeAllEditingClasses();
       //get existing tag el
-      e.target.parentElement.classList.toggle("editing");
+      toggleClass(el.parentElement, "editing");
       //e.target.classList.toggle("editing")
       this.field = current.textContent;
     }
