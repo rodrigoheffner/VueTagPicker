@@ -10,6 +10,37 @@
 This is a Vue.js component for accepting many dynamic input items from the user. This could be used for filtering or adding tags/categories (as the name suggests). This was originally written as a Knockout component but I needed the same functionality in Vue. 
 
 ## Usage
+### Installation
+
+**NPM**
+```
+    npm install --save vuetagpicker
+```
+```js
+    //In App.js
+    Vue.use(VueTagPicker)
+    //...or in a component
+    import { TagPicker } from 'vuetagpicker'
+    export default {		
+      name: 'my-component',		
+      components: {		
+        TagPicker		
+      },		
+      data() {		
+        return {		
+          tags: ["hello", "world"]
+        }		
+      },		
+      methods: {		
+    	//event callback
+        updatedTags(newTags) {		
+          this.tags = newTags;	
+        }		
+      }		
+    }
+```
+
+
 ### Props
 | Name        | Type           | Default  | Comments    |
 | ------------- |:-------------| :-----|:------|
