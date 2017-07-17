@@ -2,12 +2,12 @@
   <div class="tagpicker">
     <ul class="tagger-main" @click="setFocus" :style="{borderColor: borderColor}">
   
-      <li v-on:dblclick="setEdit(index)" v-for="(tag, index) in tags" class="tagger-tag noselect" v-bind:key="tag" :style="{backgroundColor: tagColour, color: tagTextColour}">
+      <v-touch tag="li" @press="setEdit(index)" v-for="(tag, index) in tags" class="tagger-tag noselect" v-bind:key="tag" :style="{backgroundColor: tagColour, color: tagTextColour}">
         <span class="clickable">{{tag}}</span>
         <span class="tagger-remove clickable" @click="removeTag(tag, index)">
           &#10006;
         </span>
-      </li>
+      </v-touch>
   
       <li class="tagger-new">
         <input type="text" :id="fieldName" v-model="field" @keydown="fieldUpdate" @blur="lostFocus" :style="{borderColor: tagColour}">
@@ -19,14 +19,22 @@
 <script>
 import { CommaKey, TabKey, DeleteKey, SpaceKey, EnterKey } from '../utils/constants';
 import { addClass, removeClass, toggleClass } from '../utils/dom';
+import VueTouch from 'vue-touch';
+const vTouch = VueTouch.component;
 //Polyfill
 function includes(arr, str) {
   return arr.indexOf(str) > -1;
 }
-
+VueTouch.registerCustomEvent('doubletap', {
+  type: 'tap',
+  taps: 2
+})
 
 export default {
   name: 'tag-picker',
+  components: {
+    vTouch
+  },
   props: {
     //Allow duplicate tags
     allowDuplicates: {
@@ -157,7 +165,7 @@ export default {
       //Reset editing
       this.removeAllEditingClasses();
       toggleClass(el, this.editingClass);
-      if(!el) return;
+      if (!el) return;
       this.field = el.firstChild.textContent;
     }
   },
