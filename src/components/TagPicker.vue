@@ -2,12 +2,12 @@
   <div class="tagpicker">
     <ul class="tagger-main" @click="setFocus" :style="{borderColor: borderColor}">
   
-      <li v-for="(tag, index) in tags" class="tagger-tag noselect" v-bind:key="tag" :style="{backgroundColor: tagColour, color: tagTextColour}">
-        <span v-on:dblclick="setEdit(index)">{{tag}}</span>
+      <v-touch tag="li" @press="setEdit(index)" v-for="(tag, index) in tags" class="tagger-tag noselect" v-bind:key="tag" :style="{backgroundColor: tagColour, color: tagTextColour}">
+        <span class="clickable">{{tag}}</span>
         <span class="tagger-remove clickable" @click="removeTag(tag, index)">
           &#10006;
         </span>
-      </li>
+      </v-touch>
   
       <li class="tagger-new">
         <input type="text" :id="fieldName" v-model="field" @keydown="fieldUpdate" @blur="lostFocus" :style="{borderColor: tagColour}">
@@ -17,16 +17,16 @@
 </template>
 
 <script>
-import {
-  CommaKey, TabKey, DeleteKey, SpaceKey, EnterKey
-} from '../utils/constants';
+import Vue from 'vue';
+import VueTouch from 'vue-touch';
+Vue.use(VueTouch, { name: 'v-touch' })
 
+import { CommaKey, TabKey, DeleteKey, SpaceKey, EnterKey } from '../utils/constants';
 import { addClass, removeClass, toggleClass } from '../utils/dom';
-
+//Polyfill
 function includes(arr, str) {
   return arr.indexOf(str) > -1;
 }
-
 
 
 export default {
@@ -68,10 +68,17 @@ export default {
     borderColor: {
       type: String,
       default: "#cecece"
+    },
+    editingClass: {
+      type: String,
+      default: "editing"
     }
   },
   data() {
     return {
+      longPressTimer: null,
+      longPressDelay: 250,
+      longPressBool: false,
       field: "",
       editing: {
         mode: false,
@@ -97,7 +104,6 @@ export default {
       }
     },
     addTag() {
-
       //If we're editing we want to get the tag we're editing
       if (this.editing.mode) {
         //Update the contents
@@ -116,7 +122,7 @@ export default {
         let current = this.tags.indexOf(this.field);
         let currentEl = this.$el.getElementsByClassName("tagger-tag")[current];
         addClass(this.$el.getElementsByClassName("tagger-tag"), "shake");
-        setTimeout(() => toggleClass(currentEl, "shake"), 1000);
+        setTimeout(() => toggleClass(currentEl, "shake"), 500);
         return;
       }
       //If the field has a value, then add it to the tags
@@ -143,7 +149,7 @@ export default {
     removeAllEditingClasses() {
       let tags = this.$el.getElementsByClassName("tagger-tag");
       for (var tag of tags) {
-        removeClass(tag, "editing");
+        removeClass(tag, this.editingClass);
       }
     },
     setEdit(i) {
@@ -155,10 +161,9 @@ export default {
       }
       //Reset editing
       this.removeAllEditingClasses();
-      //get existing tag el
-      toggleClass(el.parentElement, "editing");
-      //e.target.classList.toggle("editing")
-      this.field = current.textContent;
+      toggleClass(el, this.editingClass);
+
+      this.field = el.firstChild.textContent;
     }
   },
   mounted() {
@@ -172,9 +177,7 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 .clickable {
   cursor: pointer;
 }
@@ -224,7 +227,7 @@ export default {
   margin-left: 5px;
 }
 
-.tagger-tag.editing {
+.editing {
   background-color: #555 !important;
 }
 
