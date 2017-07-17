@@ -1,6 +1,4 @@
 import Vue from 'vue/dist/vue.js'
-import VueTouch from 'vue-touch';
-Vue.use(VueTouch, { name: 'v-touch' })
 import TagPicker from '@/components/TagPicker'
 import { CommaKey, TabKey, DeleteKey, SpaceKey, EnterKey } from '@/utils/constants';
 import { addClass, removeClass, toggleClass } from '@/utils/dom';
