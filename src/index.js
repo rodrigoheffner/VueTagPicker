@@ -1,8 +1,6 @@
-import VueTouch from 'vue-touch';
 module.exports = {
     TagPicker: require('./components/TagPicker.vue'),
-    install(Vue) {
-        Vue.use(VueTouch)
+    install(Vue){
         Vue.component('tag-picker', module.exports.TagPicker)
-    }
+    }    
 }
