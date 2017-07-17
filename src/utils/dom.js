@@ -23,6 +23,10 @@ export const removeClass = (el, cssClass) => {
 }
 
 export const toggleClass = (el, cssClass) => {
+    if (!el) return;
+    if (!el.className)
+        el.className = "";
+
     let classList = el.className.split(" ");
     if (classList.indexOf(cssClass) > -1) {
         removeClass(el, cssClass);

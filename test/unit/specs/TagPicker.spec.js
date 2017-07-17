@@ -228,6 +228,98 @@ describe('TagPicker.vue', () => {
     });
   });
 
+
+  it('should add tag if fieldUpdate keyCode is in addOnKeys', (done) => {
+    vm = new Constructor({
+      propsData: {
+        tagsList: []
+      }
+    }).$mount()
+
+    vm.field = "foo";
+    vm.fieldUpdate({ keyCode: EnterKey });
+    Vue.nextTick(() => {
+      expect(vm.tags.length).to.equal(1);
+      expect(vm.tags).includes("foo")
+      done();
+    });
+  });
+
+
+  it('should not remove tag if fieldUpdate keyCode is in removeOnKeys but field contents', (done) => {
+    vm = new Constructor({
+      propsData: {
+        tagsList: ["foo"]
+      }
+    }).$mount()
+
+    vm.field = "bar";
+
+    vm.fieldUpdate({ keyCode: DeleteKey });
+
+    Vue.nextTick(() => {
+      expect(vm.tags.length).to.equal(1);
+      expect(vm.tags).not.includes("bar");
+      done();
+    });
+  });
+
+  it('should remove tag if fieldUpdate keyCode is in removeOnKeys and no field contents', (done) => {
+    vm = new Constructor({
+      propsData: {
+        tagsList: ["foo"]
+      }
+    }).$mount()
+
+    vm.field = "";
+
+    vm.fieldUpdate({ keyCode: DeleteKey });
+
+    Vue.nextTick(() => {
+      expect(vm.tags.length).to.equal(0);
+      expect(vm.tags).not.includes("foo");
+      done();
+    });
+  });
+
+  it('should return true if key is not an addOnKey or a removeKey', (done) => {
+    vm = new Constructor({
+      propsData: {
+        tagsList: ["foo"]
+      }
+    }).$mount()
+    //z keycode = 90;
+    const ZKey = 90;
+
+    vm.field = "ba";
+
+    let result = vm.fieldUpdate({ keyCode: ZKey });
+
+    Vue.nextTick(() => {
+      expect(vm.tags.length).to.equal(1);
+      expect(vm.tags).not.includes("baz");
+      expect(result).to.equal(true)
+      done();
+    });
+  });
+
+  it('should setEdit for an index when called', (done) => {
+    vm = new Constructor({
+      propsData: {
+        editing: {
+          mode: false, 
+          original: 0
+        }
+      }
+    }).$mount()
+
+    vm.setEdit(3);
+    Vue.nextTick(()=>{
+      expect(vm.editing.mode).to.equal(true);
+      expect(vm.editing.original).to.equal(3);
+      done();
+    });
+  });
 });
 
 describe('utils', () => {
