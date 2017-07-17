@@ -52,6 +52,7 @@ This is a Vue.js component for accepting many dynamic input items from the user.
 | tagColour      | String | #3498db | CSS colours, if it can be used in a style attribute and is a colour, you can use it. Sets the background colour of the tag, and the underline of the input. |
 | fieldName      | String | vue-tag-picker |The ID for the tag picker. Primarily added so you can create a `<label for="vue-tag-picker">Some Label</label>` and give the input focus on label click/ |
 | borderColor      | String | #cecece | Override the default border colour for the component. |
+| editingClass      | String | "editing" | Override the default editing class for the tags. |
 
 
 ## Demo
