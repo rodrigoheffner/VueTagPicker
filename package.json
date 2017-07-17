@@ -1,6 +1,6 @@
 {
   "name": "vuetagpicker",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A Tag Picker for Vue",
   "author": "Andrew Durber <aidurber@gmail.com>",
   "scripts": {
@@ -18,8 +18,7 @@
     "email": "aidurber@gmail.com"
   },
   "dependencies": {
-    "vue": "^2.4.1",
-    "vue-touch": "^2.0.0-beta.4"
+    "vue": "^2.4.1"
   },
   "main": "dist/vue-tag-picker.js",
   "files": [
