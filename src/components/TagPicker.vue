@@ -2,12 +2,12 @@
   <div class="tagpicker">
     <ul class="tagger-main" @click="setFocus" :style="{borderColor: borderColor}">
   
-      <v-touch tag="li" @press="setEdit(index)" v-for="(tag, index) in tags" class="tagger-tag noselect" v-bind:key="tag" :style="{backgroundColor: tagColour, color: tagTextColour}">
+      <li v-on:dblclick="setEdit(index)" v-for="(tag, index) in tags" class="tagger-tag noselect" v-bind:key="tag" :style="{backgroundColor: tagColour, color: tagTextColour}">
         <span class="clickable">{{tag}}</span>
         <span class="tagger-remove clickable" @click="removeTag(tag, index)">
           &#10006;
         </span>
-      </v-touch>
+      </li>
   
       <li class="tagger-new">
         <input type="text" :id="fieldName" v-model="field" @keydown="fieldUpdate" @blur="lostFocus" :style="{borderColor: tagColour}">
@@ -17,10 +17,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VueTouch from 'vue-touch';
-Vue.use(VueTouch, { name: 'v-touch' })
-
 import { CommaKey, TabKey, DeleteKey, SpaceKey, EnterKey } from '../utils/constants';
 import { addClass, removeClass, toggleClass } from '../utils/dom';
 //Polyfill
@@ -75,9 +71,6 @@ export default {
   },
   data() {
     return {
-      longPressTimer: null,
-      longPressDelay: 250,
-      longPressBool: false,
       field: "",
       editing: {
         mode: false,
