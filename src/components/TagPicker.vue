@@ -113,7 +113,7 @@ export default {
       let current = this.tags.indexOf(this.field);
       let currentEl = this.$el.getElementsByClassName("tagger-tag")[current];
       addClass(this.$el.getElementsByClassName("tagger-tag"), "shake");
-      setTimeout(() => toggleClass(currentEl, "shake"), 1000);
+      setTimeout(() => toggleClass(currentEl, "shake"), 500);
     },
     addTag() {
       //If we're editing we want to get the tag we're editing
@@ -125,15 +125,7 @@ export default {
       }
       //If no duplicates are allowed and the user is trying to add a dupe. Return early and animate the existing tag
       if (!this.allowDuplicates && includes(this.tags, this.field)) {
-<<<<<<< HEAD
-
-        let current = this.tags.indexOf(this.field);
-        let currentEl = this.$el.getElementsByClassName("tagger-tag")[current];
-        addClass(this.$el.getElementsByClassName("tagger-tag"), "shake");
-        setTimeout(() => toggleClass(currentEl, "shake"), 500);
-=======
         this.showDuplicateError();
->>>>>>> 441d70e7ced144d0e382e358294ca6df7b48f9d5
         return;
       }
       //If the field has a value, then add it to the tags
@@ -165,24 +157,15 @@ export default {
     },
     setEdit(i) {
       let el = this.$el.getElementsByClassName("tagger-tag")[i];
-
       this.editing = {
         mode: true,
         original: i
       }
       //Reset editing
       this.removeAllEditingClasses();
-<<<<<<< HEAD
       toggleClass(el, this.editingClass);
-
-      this.field = el.firstChild.textContent;
-=======
-      this.field = this.tags[i]
       if(!el) return;
-      //get existing tag el
-      toggleClass(el.parentElement, "editing");
-      
->>>>>>> 441d70e7ced144d0e382e358294ca6df7b48f9d5
+      this.field = el.firstChild.textContent;
     }
   },
   mounted() {
