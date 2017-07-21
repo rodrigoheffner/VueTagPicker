@@ -1,6 +1,6 @@
 {
   "name": "vuetagpicker",
-  "version": "0.2.4",
+  "version": "1.0.0",
   "description": "A Tag Picker for Vue",
   "author": "Andrew Durber <aidurber@gmail.com>",
   "scripts": {
