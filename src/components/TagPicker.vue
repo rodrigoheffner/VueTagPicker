@@ -2,7 +2,7 @@
   <div class="tagpicker">
     <ul class="tagger-main" @click="setFocus" :style="{borderColor: borderColor}">
   
-      <li v-on:dblclick="setEdit(index)" v-for="(tag, index) in tags" class="tagger-tag noselect" v-bind:key="tag" :style="{backgroundColor: tagColour, color: tagTextColour}">
+      <li v-on:dblclick="setEdit(index)" v-for="(tag, index) in tags" class="tagger-tag noselect" v-bind:key="tag" :style="{backgroundColor: tagColor, color: tagTextColor}">
         <span class="clickable">{{tag}}</span>
         <span class="tagger-remove clickable" @click="removeTag(tag, index)">
           &#10006;
@@ -10,7 +10,7 @@
       </li>
   
       <li class="tagger-new">
-        <input type="text" :id="fieldName" v-model="field" @keydown="fieldUpdate" @blur="lostFocus" :style="{borderColor: tagColour}">
+        <input type="text" :id="fieldName" v-model="field" @keydown="fieldUpdate" @blur="lostFocus" :style="{borderColor: tagColor}">
       </li>
     </ul>
   </div>
@@ -48,11 +48,11 @@ export default {
     tagsList: {
       default: () => []
     },
-    tagColour: {
+    tagColor: {
       type: String,
       default: "#3498db"
     },
-    tagTextColour: {
+    tagTextColor: {
       type: String,
       default: "white"
     },
