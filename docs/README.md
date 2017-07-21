@@ -6,11 +6,11 @@ This is a Vue.js component for accepting many dynamic input items from the user.
 
 ## Installation
 
-#### NPM
+### NPM
 ```
     npm install --save vuetagpicker
 ```
-#### CDN
+### CDN
 Working on it. 
 
 ## Usage
