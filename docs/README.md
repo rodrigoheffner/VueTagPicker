@@ -1,21 +1,19 @@
-[![Build Status](https://travis-ci.org/Aidurber/VueTagPicker.svg?branch=master)](https://travis-ci.org/Aidurber/VueTagPicker)
-# Vue Tag Picker
-
-> A Tag Picker for Vue
-
 ![Demonstration](https://raw.githubusercontent.com/Aidurber/VueTagPicker/master/docs/example.gif)
 
 
 ## Introduction
 This is a Vue.js component for accepting many dynamic input items from the user. This could be used for filtering or adding tags/categories (as the name suggests). This was originally written as a Knockout component but I needed the same functionality in Vue. 
 
-## Usage
-### Installation
+## Installation
 
-**NPM**
+#### NPM
 ```
     npm install --save vuetagpicker
 ```
+#### CDN
+Working on it. 
+
+## Usage
 ```js
     //In App.js
     Vue.use(VueTagPicker)
@@ -41,6 +39,7 @@ This is a Vue.js component for accepting many dynamic input items from the user.
 ```
 
 
+
 ### Props
 | Name        | Type           | Default  | Comments    |
 | ------------- |:-------------| :-----|:------|
@@ -58,4 +57,4 @@ This is a Vue.js component for accepting many dynamic input items from the user.
 ## Demo
 [JSFiddle](https://jsfiddle.net/aidurber/1fzdq9dz/)
 
-### Incomplete - This is a work in progress!
+** Incomplete - This is a work in progress!**
