@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <label for="testField">Test label</label>
-        <tag-picker :tagsList="tagArray" v-on:changed="updatedTags" tag-colour="#F16664" tag-text-colour="white" field-name="testField" editing-class="custom-editing"></tag-picker>
+        <tag-picker :tagsList="tagArray" v-on:changed="updatedTags" tag-Color="#F16664" tag-text-Color="white" field-name="testField" editing-class="custom-editing"></tag-picker>
     </div>
 </template>
 
