@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { CommaKey, TabKey, DeleteKey, SpaceKey, EnterKey } from '../utils/constants';
+import { CommaKey, TabKey, DeleteKey, SpaceKey, EnterKey, TagColor, TagTextColor, BorderColor } from '../utils/constants';
 import { addClass, removeClass, toggleClass } from '../utils/dom';
 //Polyfill
 function includes(arr, str) {
@@ -50,11 +50,11 @@ export default {
     },
     tagColor: {
       type: String,
-      default: "#3498db"
+      default: TagColor
     },
     tagTextColor: {
       type: String,
-      default: "white"
+      default: TagTextColor
     },
     fieldName: {
       type: String,
@@ -62,7 +62,7 @@ export default {
     },
     borderColor: {
       type: String,
-      default: "#cecece"
+      default: BorderColor
     },
     editingClass: {
       type: String,

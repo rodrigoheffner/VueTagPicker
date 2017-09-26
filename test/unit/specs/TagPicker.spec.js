@@ -1,6 +1,6 @@
 import Vue from 'vue/dist/vue.js'
 import TagPicker from '@/components/TagPicker'
-import { CommaKey, TabKey, DeleteKey, SpaceKey, EnterKey } from '@/utils/constants';
+import { CommaKey, TabKey, DeleteKey, SpaceKey, EnterKey, TagColor, TagTextColor, BorderColor } from '@/utils/constants';
 import { addClass, removeClass, toggleClass } from '@/utils/dom';
 
 describe('TagPicker.vue', () => {
@@ -306,17 +306,72 @@ describe('TagPicker.vue', () => {
     vm = new Constructor({
       propsData: {
         editing: {
-          mode: false, 
+          mode: false,
           original: 0
         }
       }
     }).$mount()
 
     vm.setEdit(3);
-    Vue.nextTick(()=>{
+    Vue.nextTick(() => {
       expect(vm.editing.mode).to.equal(true);
       expect(vm.editing.original).to.equal(3);
       done();
     });
+  });
+
+  it('should render tag elements for array', function (done) {
+    let $el;
+    vm = new Constructor({
+      propsData: {
+        tagsList: ["foo", "bar"]
+      }
+    }).$mount();
+    $el = vm.$el;
+
+    Vue.nextTick(() => {
+      expect($el.querySelectorAll('.tagger-tag').length).to.equal(2)
+      expect($el.querySelectorAll('.tagger-tag')[0].textContent).to.contain('foo')
+      expect($el.querySelectorAll('.tagger-tag')[1].textContent).to.contain('bar')
+      done();
+    })
+  });
+
+  it('should apply default styles to tag', function (done) {
+    let $el;
+    vm = new Constructor({
+      propsData: {
+        tagsList: ["foo"]
+      }
+    }).$mount();
+    $el = vm.$el;
+
+    Vue.nextTick(() => {
+      expect($el.querySelectorAll('.tagger-tag')[0].style.color).to.equal(TagTextColor)
+      expect($el.querySelectorAll('.tagger-tag')[0].style.backgroundColor).to.equal(TagColor)
+      expect($el.querySelectorAll('.tagger-main')[0].style.borderColor).to.equal(BorderColor)
+      done();
+    })
+  });
+
+  it('should apply passed in styles to tag', function (done) {
+    let $el;
+    vm = new Constructor({
+      propsData: {
+        tagsList: ["foo"],
+        tagColor: 'rgb(100,100,100)',
+        tagTextColor: 'rgb(25,25,25)',
+        borderColor: 'rgb(0, 0, 0)'
+      }
+    }).$mount();
+    $el = vm.$el;
+
+    Vue.nextTick(() => {
+
+      expect($el.querySelectorAll('.tagger-tag')[0].style.color).to.equal('rgb(25, 25, 25)')
+      expect($el.querySelectorAll('.tagger-tag')[0].style.backgroundColor).to.equal('rgb(100, 100, 100)')
+      expect($el.querySelectorAll('.tagger-main')[0].style.borderColor).to.equal('rgb(0, 0, 0)')
+      done();
+    })
   });
 });
