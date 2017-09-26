@@ -374,4 +374,53 @@ describe('TagPicker.vue', () => {
       done();
     })
   });
+  it('should show confirmation to user if confirmDelete is passed', function(done){
+    let $el;
+    vm = new Constructor({
+      propsData: {
+        tagsList: ["foo"],
+        confirmDelete: true
+      }
+    }).$mount()
+    $el = vm.$el;
+    let confirmationSpy = sinon.spy(window, 'confirm');
+    Vue.nextTick(()=>{
+      console.log($el);
+      const clickEvent = new window.Event('click');
+      let removeEl = $el.querySelectorAll('.tagger-remove')[0]
+      removeEl.dispatchEvent(clickEvent);
+      vm._watcher.run();
+      expect(confirmationSpy).to.have.been.called;
+      done()
+    })
+  });
+
+  xit('should not show confirmation to user if confirmDelete is not supplied', function(done){
+    let $el;
+    vm = new Constructor({
+      propsData: {
+        tagsList: ["foo"]
+      }
+    }).$mount()
+    $el = vm.$el;
+
+    Vue.nextTick(()=>{
+      done()
+    })
+  });
+
+  xit('if confirmDelete and deleteCallback are supplied, callback must be called and not act until response', function(done){
+    let $el;
+    vm = new Constructor({
+      propsData: {
+        tagsList: ["foo"]
+      }
+    }).$mount()
+    $el = vm.$el;
+
+    Vue.nextTick(()=>{
+      
+      done()
+    })
+  })
 });
