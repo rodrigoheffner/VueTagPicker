@@ -6,6 +6,8 @@
 var webpackConfig = require('../../build/webpack.test.conf')
 
 module.exports = function (config) {
+  process.env.PHANTOMJS_BIN = './node_modules/.bin/phantomjs'
+  
   config.set({
     // to run in additional browsers:
     // 1. install corresponding karma launcher
