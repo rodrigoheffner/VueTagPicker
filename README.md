@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/Aidurber/VueTagPicker.svg?branch=master)](https://travis-ci.org/Aidurber/VueTagPicker)
+[![Coverage Status](https://coveralls.io/repos/github/Aidurber/VueTagPicker/badge.svg)](https://coveralls.io/github/Aidurber/VueTagPicker)
 # Vue Tag Picker
 
 > A Tag Picker for Vue
