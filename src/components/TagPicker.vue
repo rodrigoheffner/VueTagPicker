@@ -90,14 +90,16 @@ export default {
         inputs[0].focus();
     },
     removeTag(tag, i) {
-      //if (this.confirmDelete) {
-        if (!confirm("Test")) {
-          return;
-        }
+      //let removeTag = true;
+      //if (this.confirmDelete && !confirm("test???")) {
+      //  removeTag = false;
       //}
-      const start = this.tags.slice(0, i);
-      const end = this.tags.slice(i + 1);
-      this.tags = start.concat(end);
+      //if (removeTag) {
+      if (this.confirmDelete && !confirm("test???")) {
+        const start = this.tags.slice(0, i);
+        const end = this.tags.slice(i + 1);
+        this.tags = start.concat(end);
+      }
     },
     lostFocus() {
       if (this.field.trim() !== "") {
