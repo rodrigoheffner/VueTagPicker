@@ -1,14 +1,14 @@
 <template>
   <div class="tagpicker">
     <ul class="tagger-main" @click="setFocus" :style="{borderColor: borderColor}">
-  
+
       <li v-on:dblclick="setEdit(index)" v-for="(tag, index) in tags" class="tagger-tag noselect" v-bind:key="tag" :style="{backgroundColor: tagColor, color: tagTextColor}">
         <span class="clickable">{{tag}}</span>
         <span class="tagger-remove clickable" @click="removeTag(tag, index)">
           &#10006;
         </span>
       </li>
-  
+
       <li class="tagger-new">
         <input type="text" :id="fieldName" v-model="field" @keydown="fieldUpdate" @blur="lostFocus" :style="{borderColor: tagColor}">
       </li>
@@ -67,6 +67,10 @@ export default {
     editingClass: {
       type: String,
       default: "editing"
+    },
+    confirmDelete: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -86,6 +90,9 @@ export default {
         inputs[0].focus();
     },
     removeTag(tag, i) {
+      if (this.confirmDelete && !confirm("Are you sure you want to remove this tag?")) {
+        return;
+      }
       const start = this.tags.slice(0, i);
       const end = this.tags.slice(i + 1);
       this.tags = start.concat(end);
