@@ -90,9 +90,11 @@ export default {
         inputs[0].focus();
     },
     removeTag(tag, i) {
-      if (this.confirmDelete && !confirm("Are you sure you want to remove this tag?")) {
-        return;
-      }
+      //if (this.confirmDelete) {
+        if (!confirm("Test")) {
+          return;
+        }
+      //}
       const start = this.tags.slice(0, i);
       const end = this.tags.slice(i + 1);
       this.tags = start.concat(end);
