@@ -71,7 +71,14 @@ export default {
     confirmDelete: {
       type: Boolean,
       default: false
-    }
+    },
+    confirmDeleteCallback: {
+      type: Function
+    },
+    confirmDeleteMessage: {
+      type: String,
+      default: "Are you sure you want to remove this tag?"
+    },
   },
   data() {
     return {
@@ -90,12 +97,12 @@ export default {
         inputs[0].focus();
     },
     removeTag(tag, i) {
-      //let removeTag = true;
-      //if (this.confirmDelete && !confirm("test???")) {
-      //  removeTag = false;
-      //}
-      //if (removeTag) {
-      if (this.confirmDelete && !confirm("test???")) {
+      if (this.confirmDelete && this.confirmDeleteCallback) {
+        this.confirmDeleteCallback();
+      }
+      if (this.confirmDelete && !confirm(this.confirmDeleteMessage)) {
+        // do nothing
+      } else {
         const start = this.tags.slice(0, i);
         const end = this.tags.slice(i + 1);
         this.tags = start.concat(end);
